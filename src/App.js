@@ -21,7 +21,11 @@ function App() {
   const [editPeople, setEditPeople] = useState({
     index: null
   });
+
+  
+
   const [people, setPeople] = useState([])
+
   const handleOnChange = (e) => {
     console.log(e.target, 'hehe')
     const { name, value } = e.target;
@@ -37,6 +41,9 @@ function App() {
     if (!peopleFormData.name.length) {
       formErrors.name = "Required";
     };
+    if (!peopleFormData.status.length) {
+      formErrors.status = "Required";
+    };
     setErrors(prevState => ({
       ...prevState,
       ...formErrors
@@ -44,11 +51,9 @@ function App() {
     return Object.keys(formErrors).length === 0 && formErrors.constructor === Object;
   }
   const handleItem = (e) => {
-
     e.preventDefault(); 
     // run when there are values in form
     if (validateValues()) {
-
       const { index } = editPeople
       if (index !== null) {
         setPeople(prevState => {
@@ -63,7 +68,6 @@ function App() {
             }
             return p;
           })
-
         } )
       } else {
         setPeople(prevState => [ ...prevState, {
@@ -105,17 +109,10 @@ function App() {
   
   const listitem = people.map((item, idx) => <tr key={idx}>
 
-    {/* <Row>
-      <Col sm={2} style={{ textAlign: 'center' }}>{idx}</Col>
-      <Col sm={2} style={{ textAlign: 'center' }}>{item.name}</Col>
-      <Col sm={4} style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleEdit(idx)}>✏</Button></Col>
-      <Col sm={4} style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(idx)}>🗑</Button></Col>
-    </Row>     */}
-    
     <td style={{ textAlign: 'center' }}>{idx}</td>
     <td style={{ textAlign: 'center' }}>{item.name}</td>
     
-    {/* <td style={{ textAlign: 'center' }}>{item.status}</td> */}
+    
     <td style={{ textAlign: 'center' }}>
       {item.status === 'ok' ? (
           <p className="text-uppercase">👍 {item.status}</p>
@@ -125,19 +122,24 @@ function App() {
           <p>🎱 {item.status}</p>
       )}
     </td>
-    
 
     <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleEdit(idx)}>✏</Button></td>
     <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(idx)}>🗑</Button></td>
+
   </tr>)
+  
   
   const [show, setShow] = useState(false);
 
+  const handleCloseButton = () => {
+    if(validateValues()){
+      console.log(validateValues())
+      return setShow(false)
+    }
+  };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
-  
   return (
     <>
     <Container>
@@ -165,34 +167,23 @@ function App() {
             <div style={{ width:'100%'}}>
               <Form.Label >Task Name :</Form.Label>
               <input type="text" name="name" value={peopleFormData.name} onChange={handleOnChange}/>
+              {errors.name && <div style={{color: "red", textAlign: "left"}}><small>{errors.name}</small></div>}
               <br></br>
               <Form.Label >Task status :</Form.Label>
               <input type="text" name="status" value={peopleFormData.status} onChange={handleOnChange}/>
-              {errors.name && <div style={{color: "red", textAlign: "left"}}><small>{errors.status}</small></div>}
+              {errors.status && <div style={{color: "red", textAlign: "left"}}><small>{errors.status}</small></div>}
               {/* <Button variant="outline-info" type="submit">{editPeople.index !== null ? 'EDIT' : 'ADD'} TASK</Button> */}
             </div>
         </Modal.Body>
 
-        <Modal.Footer>
+        <Modal.Footer>          
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" type="submit" onClick={handleClose}>{editPeople.index !== null ? 'EDIT' : 'ADD'} </Button>
+          <Button variant="primary" type="submit" onClick={handleCloseButton}>{editPeople.index !== null ? ('EDIT') : 'ADD'} </Button>
         </Modal.Footer>
 
         </Form>
 
-      </Modal>
-      
-        
-        
-
-      
-    
-      {/* <Row>
-        <Col sm={2} style={{ textAlign: 'center' }}>#</Col>
-        <Col sm={2} style={{ textAlign: 'center' }}>Task Name</Col>
-        <Col sm={4} style={{ textAlign: 'center' }}>EDIT</Col>
-        <Col sm={4} style={{ textAlign: 'center' }}>REMOVE</Col>
-      </Row> */}  
+      </Modal>  
 
         <Table striped  hover>
           <thead>
