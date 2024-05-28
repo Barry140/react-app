@@ -180,7 +180,7 @@ function App() {
 
         <Modal.Footer>          
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" type="submit" onClick={handleCloseButton}>{editPeople.index !== null ? ('EDIT') : 'ADD'} </Button>
+          <Button variant="primary" type="submit" onClick={handleCloseButton}>{editPeople.index !== null ? ('SAVE') : 'ADD'} </Button>
         </Modal.Footer>
 
         </Form>
