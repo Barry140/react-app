@@ -83,7 +83,6 @@ function App() {
         status: ''
       })
       setEditPeople({index: null});
-
     }
 
   }
@@ -106,13 +105,24 @@ function App() {
       })
     }
 
+    //
+  const [show, setShow] = useState(false);
+  const handleCloseButton = () => {
+    if(validateValues()){
+      console.log(validateValues())
+      return setShow(false)
+    }
+  };
+  const handleClose = () => {
+    setPeopleFormData(defaultFormData);
+    setEditPeople({index: null});
+    return setShow(false)
+  };
+  const handleShow = () => setShow(true);
   
   const listitem = people.map((item, idx) => <tr key={idx}>
-
     <td style={{ textAlign: 'center' }}>{idx}</td>
     <td style={{ textAlign: 'center' }}>{item.name}</td>
-    
-    
     <td style={{ textAlign: 'center' }}>
       {item.status === 'ok' ? (
           <p className="text-uppercase">👍 {item.status}</p>
@@ -122,23 +132,15 @@ function App() {
           <p>🎱 {item.status}</p>
       )}
     </td>
-
-    <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleEdit(idx)}>✏</Button></td>
+    <td style={{ textAlign: 'center' }}>
+      {/* <Button variant="outline-dark" type="button" onClick={() => handleEdit(idx)}>✏</Button> */}
+      <Button variant="outline-dark" type="button" onClick={() => {handleShow(); handleEdit(idx)}}>✏</Button>
+    </td>
     <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(idx)}>🗑</Button></td>
-
   </tr>)
   
   
-  const [show, setShow] = useState(false);
-
-  const handleCloseButton = () => {
-    if(validateValues()){
-      console.log(validateValues())
-      return setShow(false)
-    }
-  };
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  
 
   return (
     <>
@@ -152,13 +154,13 @@ function App() {
 
         <div style={{ textAlign: 'right' }}>
           <Button  variant="outline-info" onClick={handleShow}>
-           {editPeople.index !== null ? 'Click here to Edit selected task ' : 'ADD TASK'}
+           ADD TASK
           </Button>
         </div>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title> Add task info</Modal.Title>
+          <Modal.Title>{editPeople.index !== null ? 'EDIT TASK INFO' : 'ADD TASK INFO'}</Modal.Title>
         </Modal.Header>
         
         <Form onSubmit={handleItem}>
