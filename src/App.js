@@ -41,7 +41,7 @@ function App() {
         })
       })
     }
-    else updateList();
+    else updateList(); //show task lisk if the input is empty
   }
 
   const [people, setPeople] = useState([])
