@@ -1,8 +1,12 @@
 .App {
-  /* text-align: center; */
+  min-height: 100vh;
+  background-color: #ffffff;
 }
  /* The following line can be included in your src/index.js or App.js file */
 
+ .container{
+  padding-left: 0px;
+ }
 
  table thead tr:nth-child(1) { 
   border-bottom: 2px solid black; 
@@ -25,14 +29,9 @@ input{
 }
 
 .App-header {
-  background-color: #ffffff;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: center; */
   font-size: calc(10px + 2vmin);
-  color: rgb(0, 0, 0);
 }
 
 .App-link {
