@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios';
 
@@ -217,28 +218,9 @@ function App() {
     <Container>
     <div className="App">
       <header className="App-header">
-
-          <table>
-      <tr>
-        <th>Name</th>
-        <th>Contact</th>
-        <th>Country</th>
-      </tr>
-      {listitem}
-    </table>
-
-    <form onSubmit={handleItem}>
-      <input type="text" name="name"/>
-      <input type="number" name="age"/>
-      <input type="text" name="address"/>
-      <button type="submit">ADD PEOPLE</button>
-    </form>
-
-
         <h1>TODO list Demo App</h1>
         <p>Do it now</p>
       </header>
-
 
       <div>
         <Row>
@@ -277,7 +259,7 @@ function App() {
       </div> 
 
     </div>
-
+    
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{editPeople.index !== null ? 'EDIT TASK INFO' : 'ADD TASK INFO'}</Modal.Title>
