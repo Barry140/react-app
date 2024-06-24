@@ -210,14 +210,14 @@ function App() {
   useEffect(() => {
     updateList()
   }, [])
->>>>>>> bugfix/modal-issues
+
 
   return (
     <>
     <Container>
     <div className="App">
       <header className="App-header">
-<<<<<<< HEAD
+
           <table>
       <tr>
         <th>Name</th>
@@ -234,10 +234,9 @@ function App() {
       <button type="submit">ADD PEOPLE</button>
     </form>
 
-=======
+
         <h1>TODO list Demo App</h1>
         <p>Do it now</p>
->>>>>>> bugfix/modal-issues
       </header>
 
 
