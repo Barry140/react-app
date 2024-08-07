@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 
 
@@ -21,6 +21,7 @@ const defaultFormData = {
 
 function App() {
   const [peopleFormData, setPeopleFormData] = useState(defaultFormData)
+  const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({
     name: '',
     status: ''
@@ -34,14 +35,7 @@ function App() {
       setSearchTask(e.target.value);
   }
   const handleSearch = () => {
-    if(searchTask){
-      setPeople(prevState => {
-        return prevState.filter ((p) => {
-          return p.name === searchTask;
-        })
-      })
-    }
-    else updateList(); //show task lisk if the input is empty
+    updateList(searchTask || ''); 
   }
 
   const [people, setPeople] = useState([])
@@ -96,7 +90,7 @@ function App() {
           name:peopleFormData.name,
           status:peopleFormData.status
         } ] )
-        postList();
+        await postList();
       }
       console.log('testt');
       // Reset form values after adding new people
@@ -117,9 +111,10 @@ function App() {
       }))
   }
   const handleDelete = async (id) => {
+    console.log(id);
     await axios.delete(`http://localhost:3001/list/${id}`)
     updateList();
-  }
+  } 
   
   //
   const [show, setShow] = useState(false);
@@ -153,23 +148,50 @@ function App() {
         return <p>🎱 {item}</p>;
       }
   } 
-  const listitem = people.map((item, idx) => 
-    <tr key={idx}>
-    <td className='text-center'>{idx + 1}</td>
-    <td className='text-center'>{item.name}</td>
-    <td style={{ textAlign: 'center' }}>{getItemStatus(item.status)}</td>
-    <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => {handleShow(); handleEdit(item.id)}}>✏</Button></td>
-    <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(item.id)}>🗑</Button></td>
-  </tr>)
-  
-  const updateList = async () => {
-    await axios.get('http://localhost:3001/list')
-    .then(response => {
-      setPeople(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  const listitem = () => {
+    if (loading) { 
+      return <tr className='d-flex'>
+      <Spinner className='me-2 ' animation="border" size='sm'/>Loading..
+      </tr>;
+    }
+
+    if (!people.length) {
+      return <p>No Data</p>
+    }
+
+    return  people.map((item, idx) => {
+      return (
+      <tr key={idx}>
+      <td className='text-center'>{idx + 1}</td>
+      <td className='text-center'>{item.name}</td>
+      <td style={{ textAlign: 'center' }}>{getItemStatus(item.status)}</td>
+      <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => {handleShow(); handleEdit(item.id)}}>✏</Button></td>
+      <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(item.id)}>🗑</Button></td>
+    </tr>)})
+  }
+
+  const Grow = () => {
+    if(!loading)
+     return <Spinner animation="grow" />;
+  }
+
+  const updateList = async (keyword) => {
+    setLoading(true);
+    try {
+      let apiEndpoint = 'http://localhost:3001/list';
+      if (keyword) {
+        apiEndpoint += `?keyword=${keyword}`
+      }
+      setLoading(true);
+      const response = await axios.get(apiEndpoint);
+      setLoading(false);
+      console.log(response.data, "RESPONSE DATA")
+      const { records, message } = response?.data;
+      setPeople(records)
+      console.log(message);
+    } catch(err) {
+      console.log(err)
+    }
   }
   const getItem = async (id) => {
     await axios.get(`http://localhost:3001/list/${id}`)
@@ -180,18 +202,11 @@ function App() {
       console.log(error)
     })
   }
-  const patchItem = async (idx) => {
-    await axios
-      .put(`http://localhost:3001/list/${idx}`, {
+  const patchItem = async (id) => {
+    await axios.put(`http://localhost:3001/list/${id}`, {
         name: peopleFormData.name,
         status: peopleFormData.status
-      })
-      .then(response => {
-        console.log("Item da thay doi:", response?.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    })
   }
   const postList = async () => {
       try {
@@ -251,7 +266,7 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {listitem}
+                {listitem()}
               </tbody>
             </Table>
           </Col>
