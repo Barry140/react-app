@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConfirmationPopover from './DeleteConfirmation';
+import { Popover } from 'react-bootstrap';
 
 const defaultFormData = {
     name: '',
@@ -157,9 +158,9 @@ const Home = ({ parentLoading, t } ) => {
       })
     updateList();
   } 
-  const handleCancle = () => {
-    
-  }
+  const handleCancel = () => {
+    console.log('Action canceled');
+  };
 
   const listitem = () => {
     if (loading) { 
@@ -180,7 +181,7 @@ const Home = ({ parentLoading, t } ) => {
       <td style={{ textAlign: 'center' }}>
           <ConfirmationPopover 
             onConfirm={() => handleDelete(item.id)} 
-            onCancel={ () => handleCancle()}
+            onCancel={ () => handleCancel }
           />
         </td>
     </tr>)})
