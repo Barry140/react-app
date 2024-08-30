@@ -1,306 +1,55 @@
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import './App.css';
-import { useEffect, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import Login from './pages/Login';
+import Home from './pages/Home';
 import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
-
-
-
-const defaultFormData = {
-  name: '',
-  status: ''
-};
-
+import Register from './pages/Register';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
-  const [peopleFormData, setPeopleFormData] = useState(defaultFormData)
-  const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState({
-    name: '',
-    status: ''
-  });
-  const [editPeople, setEditPeople] = useState({
-    index: null
-  });
 
-  const [searchTask, setSearchTask] = useState('')
-  const handleOnSearchChange = (e) => {
-      setSearchTask(e.target.value);
+  const navigate = useNavigate();
+
+  const handleLogin= () =>  {
+    navigate("/login");
   }
-  const handleSearch = () => {
-    updateList(searchTask || ''); 
+  const handleRegister= () =>  {
+    navigate("/register");
   }
 
-  const [people, setPeople] = useState([])
-
-  const handleOnChange = (e) => {
-    console.log(e.target, 'hehe')
-    const { name, value } = e.target;
-
-    setPeopleFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-  const validateValues = () => {
-    let formErrors = {};
-    console.log(peopleFormData.name.length, 4444);
-    if (!peopleFormData.name.length) {
-      formErrors.name = "Required";
-    };
-    if (!peopleFormData.status.length) {
-      formErrors.status = "Required";
-    };
-    setErrors(prevState => ({
-      ...prevState,
-      ...formErrors
-    }))
-    return Object.keys(formErrors).length === 0 && formErrors.constructor === Object;
-  }
-
-  const handleItem = async (e) => {
-    e.preventDefault(); 
-    // run when there are values in form
-    if (validateValues()) {
-      const { index } = editPeople
-      if (index !== null) {
-          await patchItem(index);
-          setPeople(prevState => {
-          return prevState.map((p, idx) => {
-            if (idx === index) {
-              const a = {
-                ...p,
-                ...peopleFormData
-              }
-              console.log(p, peopleFormData, 'a la gi')
-              return a;
-            }
-            return p;
-          })
-        } )
-      } else {
-        setPeople(prevState => [ ...prevState, {
-          name:peopleFormData.name,
-          status:peopleFormData.status
-        } ] )
-        await postList();
-      }
-      console.log('testt');
-      // Reset form values after adding new people
-      setPeopleFormData(defaultFormData)
-      setErrors({
-        name: '',
-        status: ''
-      })
-      setEditPeople({index: null});
-      }
-      updateList();
-  }
-  const handleEdit = async (id) => {
-      await getItem(id) 
-      setEditPeople(prevState => ({
-        ...prevState,
-        index: id
-      }))
-  }
-  const handleDelete = async (id) => {
-    console.log(id);
-    await axios.delete(`http://localhost:3001/list/${id}`)
-    updateList();
-  } 
-  
-  //
-  const [show, setShow] = useState(false);
-  const handleCloseButton = () => {
-    if(validateValues()){
-      console.log(validateValues())
-      return setShow(false)
-    }
-  };
-  const handleClose = () => {
-    setPeopleFormData(defaultFormData);
-    setEditPeople({index: null});
-    return setShow(false)
-  };
-  const handleShow = () => setShow(true);
-  //
-
-  const getItemStatus = (item) => {
-    switch (item) {
-      case 'ok': {
-        return (
-          <p className="text-uppercase">👍 {item}</p>
-        ); 
-      }
-      case 'good': {
-        return (
-          <p className="text-uppercase">👍 {item}</p>
-        ); 
-      }
-      default:
-        return <p>🎱 {item}</p>;
-      }
-  } 
-  const listitem = () => {
-    if (loading) { 
-      return <tr className='d-flex'>
-      <Spinner className='me-2 ' animation="border" size='sm'/>Loading..
-      </tr>;
-    }
-
-    if (!people.length) {
-      return <p>No Data</p>
-    }
-
-    return  people.map((item, idx) => {
-      return (
-      <tr key={idx}>
-      <td className='text-center'>{idx + 1}</td>
-      <td className='text-center'>{item.name}</td>
-      <td style={{ textAlign: 'center' }}>{getItemStatus(item.status)}</td>
-      <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => {handleShow(); handleEdit(item.id)}}>✏</Button></td>
-      <td style={{ textAlign: 'center' }}><Button variant="outline-dark" type="button" onClick={() => handleDelete(item.id)}>🗑</Button></td>
-    </tr>)})
-  }
-
-  const Grow = () => {
-    if(!loading)
-     return <Spinner animation="grow" />;
-  }
-
-  const updateList = async (keyword) => {
-    setLoading(true);
-    try {
-      let apiEndpoint = 'http://localhost:3001/list';
-      if (keyword) {
-        apiEndpoint += `?keyword=${keyword}`
-      }
-      setLoading(true);
-      const response = await axios.get(apiEndpoint);
-      setLoading(false);
-      console.log(response.data, "RESPONSE DATA")
-      const { records, message } = response?.data;
-      setPeople(records)
-      console.log(message);
-    } catch(err) {
-      console.log(err)
-    }
-  }
-  const getItem = async (id) => {
-    await axios.get(`http://localhost:3001/list/${id}`)
-    .then(response => {
-      return setPeopleFormData(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
-  const patchItem = async (id) => {
-    await axios.put(`http://localhost:3001/list/${id}`, {
-        name: peopleFormData.name,
-        status: peopleFormData.status
-    })
-  }
-  const postList = async () => {
-      try {
-        const response = await axios.post('http://localhost:3001/list', {
-          ...peopleFormData
-        });
-        console.log(response);
-        console.log('Data posted successfully!');
-        // Optionally handle response from server
-        console.log('Server response:', response.data);
-      } catch (error) {
-        console.error('Error posting data:', error);
-        // Handle error scenario
-      }
-    } 
-  //Sử dụng axios để fetch dữ liệu
-  useEffect(() => {
-    updateList()
-  }, [])
-
+  const [loading, setLoading] = useState(true);
 
   return (
-    <>
     <Container>
-    <div className="App">
-      <header className="App-header">
-        <h1>TODO list Demo App</h1>
-        <p>Do it now</p>
-      </header>
-
-      <div>
+      <div className="App">
+        <header >
         <Row>
-          <Col sm={4} className='d-flex '>
-            <input placeholder='Task name to search..' type="search" name="name" value={searchTask} onChange={handleOnSearchChange}/>
-          </Col>
-          <Col sm={1} className='d-flex p-0'>
-            <Button variant="outline-primary"  onClick={handleSearch}>SEARCH</Button>
-          </Col>
-          <Col sm={1} className='d-flex p-0'>
-            <Button variant="secondary" size="sm" onClick={updateList}>Show all</Button>
-          </Col>
-          <Col  style={{textAlign: 'right'}}>
-            <Button variant="outline-primary" onClick={handleShow}>ADD TASK</Button>
+          <Col><Link to={'/'} style={{ textDecoration: 'none' , color: 'black'} }><h1>TODO list Demo App</h1></Link></Col>
+          <Col className='d-flex justify-content-end'>
+            <Button type="button" variant="outline-primary" className='me-2'  onClick={handleLogin}>
+                Login
+            </Button>
+            <Button type="button" variant="outline-primary"  onClick={handleRegister}>
+                Register
+            </Button>
           </Col>
         </Row>
+          <p>Do it now</p>
+        </header>
 
-        <Row>
-          <Col>
-            <Table striped  hover>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Task Name</th>
-                  <th>Task Status</th>
-                  <th>Edit</th>
-                  <th>Remove</th>
-                </tr>
-              </thead>
-              <tbody>
-                {listitem()}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </div> 
-
-    </div>
-    
-    <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{editPeople.index !== null ? 'EDIT TASK INFO' : 'ADD TASK INFO'}</Modal.Title>
-        </Modal.Header>
-        
-        <Form onSubmit={handleItem}>
-          <Modal.Body>
-              {/* {JSON.stringify(errors)} */} 
-              <div style={{ width:'100%'}}>
-                <Form.Label >Task Name :</Form.Label>
-                <input type="text" name="name" value={peopleFormData.name} onChange={handleOnChange}/>
-                {errors.name && <div style={{color: "red", textAlign: "left"}}><small>{errors.name}</small></div>}
-                <br></br>
-                <Form.Label >Task status :</Form.Label>
-                <input type="text" name="status" value={peopleFormData.status} onChange={handleOnChange}/>
-                {errors.status && <div style={{color: "red", textAlign: "left"}}><small>{errors.status}</small></div>}
-              </div>
-          </Modal.Body>
-          <Modal.Footer>          
-            <Button variant="secondary" onClick={handleClose}>Close</Button>
-            <Button variant="primary" type="submit" onClick={handleCloseButton}>{editPeople.index !== null ? ('SAVE') : 'ADD'} </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
+          <Routes>
+            <Route exact path='/' element={<Home parentLoading={loading} t="Tuan"/>} />
+            <Route exact path="/login" element={<Login />} />  
+            <Route exact path="/register" element={<Register />} />  
+          </Routes>
+      </div>
     </Container>
-    </>
+
   );
   
 }
