@@ -87,6 +87,16 @@ const Home = ({ parentLoading, t } ) => {
               console.log(p, peopleFormData, 'a la gi')
               return a;
             }
+            toast.success(' Task edited!', {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              });
             return p;
           })
         } )

@@ -17,7 +17,6 @@ function ConfirmationPopover({ onConfirm, onCancel }) {
         </Popover>
     );
 
-    // Toggle popover visibility
     const handleClick = () => setShow(!show);
 
     return (
