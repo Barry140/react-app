@@ -28,6 +28,30 @@ const Register = () => {
         password: ''
     });
 
+    const toastRegisterSuccess = () => {
+      toast.success('Register susccesfully!', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    } 
+    const toastRegisterFalse = () => {
+      toast.warn('Email already in use', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
     const handleOnChange = (e) => {
         console.log(e.target, 'hehe')
         const { name, value } = e.target;
@@ -60,28 +84,23 @@ const Register = () => {
             const response = await axios.post('http://localhost:3001/users', {
               ...registerformData
             })
-            if(response.data.message == "success"){
-              toast.success('Register susccesfully!', {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                });
+            if(response.data.message === "success"){
+              toastRegisterSuccess();
+              setErrors({
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: ''
+              })
+              setRegisterformData(defaultFormData)
             }else{
-              toast.warn('Email already in use', {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                });
+              toastRegisterFalse();
+              setErrors({
+                firstname: '',
+                lastname: '',
+                email: 'Email already created',
+                password: ''
+              })
             }
             
       }catch (error) {
@@ -95,13 +114,6 @@ const Register = () => {
         setLoading(true);
         await createUser();
         setLoading(false);
-        setRegisterformData(defaultFormData)
-        setErrors({
-          firstname: '',
-          lastname: '',
-          email: '',
-          password: ''
-        })
       }
     } 
 
@@ -109,7 +121,7 @@ const Register = () => {
         <h1 className='text-center'>Registration</h1>
         <h5>Type your info below</h5>
             <Form onSubmit={handleRegisterForm}>
-                <Row className="mt-4 mb-3">
+                <Row className="mt-4 mb-4">
                     <Col>
                         <FloatingLabel controlId="floatingInput" label="Firstname"  >
                             <Form.Control value={registerformData.firstname} onChange={handleOnChange} type="text" name="firstname" placeholder="Type your name here" />
@@ -123,14 +135,20 @@ const Register = () => {
                         {errors.lastname && <div style={{color: "red", textAlign: "left"}}><small>{errors.lastname}</small></div>}  
                     </Col>
                 </Row>
-                <FloatingLabel controlId="floatingInput" label="Email address"  className="mb-3">
-                    <Form.Control value={registerformData.email} onChange={handleOnChange} type="email" name="email" placeholder="name@example.com" />
-                </FloatingLabel>
-                {errors.email && <div style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></div>}  
-                <FloatingLabel controlId="floatingPassword" label="Password"  className="mb-3">
+                
+                <Row className="mb-4">
+                  <FloatingLabel controlId="floatingInput" label="Email address"  >
+                      <Form.Control value={registerformData.email} onChange={handleOnChange} type="email" name="email" placeholder="name@example.com" />
+                  </FloatingLabel>
+                  {errors.email && <Row style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></Row>}  
+                </Row>
+                
+                <Row className="mb-4">
+                <FloatingLabel controlId="floatingPassword" label="Password">
                     <Form.Control value={registerformData.password} onChange={handleOnChange} type="password" name="password" placeholder="Password" />
                 </FloatingLabel>
                 {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
+                </Row>
 
                 <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading} >Submit</Button>
                 {loading && <Spinner className='me-2 ms-2 align-middle ' animation="border" size='sm'/>}
