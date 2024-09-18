@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const defaultFormData = {
@@ -25,7 +26,7 @@ const Register = () => {
         lastname: '',
         email: '',
         password: ''
-      });
+    });
 
     const handleOnChange = (e) => {
         console.log(e.target, 'hehe')
@@ -36,10 +37,8 @@ const Register = () => {
         [name]: value
         }))
     }
-
     const validateValues = () => {        
-      let formErrors = {};
-
+        let formErrors = {};
         for (const [key, value] of Object.entries(registerformData)) {
           if (!value.length) {
             formErrors = {
@@ -48,46 +47,62 @@ const Register = () => {
             };
           }
         }
-
         console.log(formErrors, 'debug');
-
         setErrors(prevState => ({
           ...prevState,
           ...formErrors
         }));
 
         return Object.keys(formErrors).length === 0 && formErrors.constructor === Object;
+    }
+    const createUser = async () =>  {
+      try{
+            const response = await axios.post('http://localhost:3001/users', {
+              ...registerformData
+            })
+            if(response.data.message == "success"){
+              toast.success('Register susccesfully!', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+            }else{
+              toast.warn('Email already in use', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+            }
+            
+      }catch (error) {
+          console.error('Error posting data:', error);
       }
-
-      const createUser = async () =>  {
-        try{
-             await axios.post('http://localhost:3001/users', {
-                ...registerformData
-              })
-              .then(response => {
-                alert(response.data.message)
-              })
-        }catch (error) {
-            console.error('Error posting data:', error);
-            // Handle error scenario
-          }
-      }
-
-      const handleRegisterForm = async (e) => {
-        e.preventDefault();
-        console.log(validateValues(), 2323232);
+    }
+    const handleRegisterForm = async (e) => {
+      e.preventDefault();
+      console.log(validateValues(), 2323232);
+      if (validateValues()) {
         setLoading(true);
-        if (validateValues()) {
-          await createUser();
-          setLoading(false);
-          setRegisterformData(defaultFormData)
-          setErrors({
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: ''
-          })
-        }
+        await createUser();
+        setLoading(false);
+        setRegisterformData(defaultFormData)
+        setErrors({
+          firstname: '',
+          lastname: '',
+          email: '',
+          password: ''
+        })
+      }
     } 
 
     return <>
@@ -120,6 +135,7 @@ const Register = () => {
                 <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading} >Submit</Button>
                 {loading && <Spinner className='me-2 ms-2 align-middle ' animation="border" size='sm'/>}
             </Form> 
+            <ToastContainer  />
         </>
 }
 
