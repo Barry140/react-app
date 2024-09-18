@@ -136,18 +136,22 @@ const Register = () => {
                     </Col>
                 </Row>
                 
-                <Row className="mb-4">
-                  <FloatingLabel controlId="floatingInput" label="Email address"  >
+                <Row className="mt-4 mb-4">
+                  <Col>
+                    <FloatingLabel controlId="floatingInput" label="Email address"  >
                       <Form.Control value={registerformData.email} onChange={handleOnChange} type="email" name="email" placeholder="name@example.com" />
-                  </FloatingLabel>
-                  {errors.email && <Row style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></Row>}  
+                    </FloatingLabel>
+                    {errors.email && <Row style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></Row>}  
+                  </Col>
                 </Row>
                 
                 <Row className="mb-4">
-                <FloatingLabel controlId="floatingPassword" label="Password">
-                    <Form.Control value={registerformData.password} onChange={handleOnChange} type="password" name="password" placeholder="Password" />
-                </FloatingLabel>
-                {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
+                  <Col>
+                    <FloatingLabel controlId="floatingPassword" label="Password">
+                      <Form.Control value={registerformData.password} onChange={handleOnChange} type="password" name="password" placeholder="Password" />
+                    </FloatingLabel>
+                    {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
+                  </Col>
                 </Row>
 
                 <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading} >Submit</Button>

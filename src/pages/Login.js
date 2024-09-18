@@ -90,26 +90,27 @@ const Login = () => {
     }
 
     return <>
-        <h1 className='text-center'>Login </h1>
-        <Form className=' align-self-center' onSubmit={handleLoginForm}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control onChange={handleOnChange} name='email' type="email" placeholder="Enter email" />
-        {errors.email && <div style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></div>}  
-        <Form.Text className="text-muted">
-        </Form.Text>
-      </Form.Group>
+              <h4 className='text-center fs-1'>Login </h4>
+              <Form className=' align-self-center' onSubmit={handleLoginForm}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label class="fw-bold">Email address</Form.Label>
+                  <Form.Control onChange={handleOnChange} name='email' type="email" placeholder="Enter email" />
+                  {errors.email && <div style={{color: "red", textAlign: "left"}}><small>{errors.email}</small></div>}  
+                  <Form.Text className="text-muted">
+                  </Form.Text>
+                </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control onChange={handleOnChange} name='password' type="password" placeholder="Password" />
-        {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
-    <ToastContainer  />
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label class="fw-bold">Password</Form.Label>
+                  <Form.Control onChange={handleOnChange} name='password' type="password" placeholder="Password" />
+                  {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
+                </Form.Group>
+                
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Form>
+              <ToastContainer  />
     </>
 }
 
