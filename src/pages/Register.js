@@ -118,9 +118,12 @@ const Register = () => {
     } 
 
     return <>
-        <h1 className='text-center'>Registration</h1>
+        <h4 className='text-center fs-1'>Registration </h4>
+        <Row className='text-center'>
+        <Col></Col>
+        <Col className="mt-3">
         <h5>Type your info below</h5>
-            <Form onSubmit={handleRegisterForm}>
+        <Form onSubmit={handleRegisterForm}>
                 <Row className="mt-4 mb-4">
                     <Col>
                         <FloatingLabel controlId="floatingInput" label="Firstname"  >
@@ -150,13 +153,16 @@ const Register = () => {
                     <FloatingLabel controlId="floatingPassword" label="Password">
                       <Form.Control value={registerformData.password} onChange={handleOnChange} type="password" name="password" placeholder="Password" />
                     </FloatingLabel>
-                    {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
+                    {errors.password && <div style={{color: "red", textAlign: "left", paddingLeft: "10px"}}><small>{errors.password}</small></div>}  
                   </Col>
                 </Row>
 
                 <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading} >Submit</Button>
                 {loading && <Spinner className='me-2 ms-2 align-middle ' animation="border" size='sm'/>}
-            </Form> 
+            </Form> </Col>
+        <Col></Col>
+      </Row>
+            
             <ToastContainer  />
         </>
 }

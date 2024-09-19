@@ -38,7 +38,7 @@ const Home = ({ parentLoading, t } ) => {
   const handleClose = () => {
     setPeopleFormData(defaultFormData);
     setEditPeople({index: null});
-     setShow(false)
+    setShow(false)
   };
   const handleOnSearchChange = (e) => {
       setSearchTask(e.target.value);
@@ -125,9 +125,9 @@ const Home = ({ parentLoading, t } ) => {
         status: ''
       })
       setEditPeople({index: null});
-      }
       setShow(false);
       updateList();
+    }
   }
   const handleEdit = async (id) => {
       await getItem(id) 
