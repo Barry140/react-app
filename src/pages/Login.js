@@ -78,7 +78,7 @@ const Login = () => {
             toastLoginSuccess();
             setTimeout(() => {
               navigate('/')
-            }, 4000); 
+            }, 2000); 
           }else{
             toastLoginFalse();
           }

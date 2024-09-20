@@ -90,7 +90,7 @@ const Register = () => {
               setErrors({})
               setTimeout(() => {
                 navigate('/login')
-              }, 4000); 
+              }, 2000); 
             }else{
               toastRegisterFalse();
               setErrors({
