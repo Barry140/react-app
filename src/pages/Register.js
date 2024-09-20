@@ -70,6 +70,8 @@ const Register = () => {
               ...formErrors,
               [key]:  "Required",
             };
+          } else {
+            formErrors[key] = ""; 
           }
         }
         console.log(formErrors, 'debug');

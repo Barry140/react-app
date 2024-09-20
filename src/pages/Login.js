@@ -59,6 +59,8 @@ const Login = () => {
       for (let key in loginformData) {
         if (!loginformData[key].length) {
             formErrors[key] = "Required"; 
+        } else {
+          formErrors[key] = ""; 
         }
     }
       setErrors(prevState => ({ 
