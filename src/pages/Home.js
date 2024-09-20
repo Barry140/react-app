@@ -69,6 +69,18 @@ const Home = ({ parentLoading, t } ) => {
     }))
     return Object.keys(formErrors).length === 0 && formErrors.constructor === Object;
   }
+  const toastSuccess = (text) => {
+    toast.success(text, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
+  }
   const handleItem = async (e) => {
     e.preventDefault(); 
     // run when there are values in form
@@ -84,41 +96,23 @@ const Home = ({ parentLoading, t } ) => {
                 ...peopleFormData
               }
               console.log(p, peopleFormData, 'a la gi')
-              
               return a;
             }
             return p;
           })
         } )
-        toast.success(' Task edited!', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        let text = "Edited task"
+        toastSuccess(text);
       } else {
         setPeople(prevState => [ ...prevState, {
           name:peopleFormData.name,
           status:peopleFormData.status
         } ] )
         await postList();
-        toast.success(' Created new task!', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
+        let text = "Added Task!"
+        toastSuccess(text);
       }
       console.log('testt');
-      // Reset form values after adding new people
       setPeopleFormData(defaultFormData)
       setErrors({
         name: '',
