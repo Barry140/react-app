@@ -84,21 +84,22 @@ const Home = ({ parentLoading, t } ) => {
                 ...peopleFormData
               }
               console.log(p, peopleFormData, 'a la gi')
+              
               return a;
             }
-            toast.success(' Task edited!', {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-              });
             return p;
           })
         } )
+        toast.success(' Task edited!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       } else {
         setPeople(prevState => [ ...prevState, {
           name:peopleFormData.name,
@@ -140,6 +141,11 @@ const Home = ({ parentLoading, t } ) => {
       case 'ok': {
         return (
           <p className="text-uppercase">👍 {item}</p>
+        ); 
+      }
+      case 'not ok': {
+        return (
+          <p className="text-uppercase">👎 {item}</p>
         ); 
       }
       case 'good': {
