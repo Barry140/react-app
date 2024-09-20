@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const defaultFormData = {
@@ -18,7 +19,7 @@ const defaultFormData = {
   };
 
 const Register = () => {
-
+    const navigate = useNavigate();
     const [registerformData, setRegisterformData] = useState(defaultFormData);
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({
@@ -84,15 +85,12 @@ const Register = () => {
             const response = await axios.post('http://localhost:3001/users', {
               ...registerformData
             })
-            if(response.data.message === "success"){
+            if(response.data.message === "success"){  
               toastRegisterSuccess();
-              setErrors({
-                firstname: '',
-                lastname: '',
-                email: '',
-                password: ''
-              })
-              setRegisterformData(defaultFormData)
+              setErrors({})
+              setTimeout(() => {
+                navigate('/login')
+              }, 4000); 
             }else{
               toastRegisterFalse();
               setErrors({

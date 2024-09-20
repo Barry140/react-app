@@ -11,7 +11,6 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ConfirmationPopover from './DeleteConfirmation';
-import { Popover } from 'react-bootstrap';
 
 const defaultFormData = {
     name: '',

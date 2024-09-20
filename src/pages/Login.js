@@ -6,6 +6,7 @@ import axios from 'axios';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const defaultFormData = {
   email: '',
@@ -13,6 +14,7 @@ const defaultFormData = {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loginformData, setLoginformData] = useState(defaultFormData);
     const [errors, setErrors] = useState({
         email: '',
@@ -54,12 +56,11 @@ const Login = () => {
     }
     const validateValues = () => {
       let formErrors = {};
-      if (!loginformData.email.length) {
-          formErrors.email = "Required";
-        };
-      if (!loginformData.password.length) {
-          formErrors.password = "Required";
-        };
+      for (let key in loginformData) {
+        if (!loginformData[key].length) {
+            formErrors[key] = "Required"; 
+        }
+    }
       setErrors(prevState => ({ 
         ...prevState,
         ...formErrors
@@ -75,13 +76,15 @@ const Login = () => {
           })
           if(response.data.message === "login success"){
             toastLoginSuccess();
+            setTimeout(() => {
+              navigate('/')
+            }, 4000); 
           }else{
             toastLoginFalse();
           }
           
       }catch (error) {
           console.error('Error posting data:', error);
-          // Handle error scenario
         }
     }
     const handleLoginForm = async (e) =>{
