@@ -155,8 +155,9 @@ const Register = () => {
                   </Col>
                 </Row>
 
-                <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading} >Submit</Button>
-                {loading && <Spinner className='me-2 ms-2 align-middle ' animation="border" size='sm'/>}
+                <Button variant={loading ? "secondary" : "primary"}  type="submit" disabled={loading}  className='w-100'>
+                Submit {loading && <Spinner className='me-2 ms-2 align-middle ' animation="border" size='sm'/>}
+                </Button>
             </Form> </Col>
         <Col></Col>
       </Row>

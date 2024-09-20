@@ -114,8 +114,8 @@ const Login = () => {
                       {errors.password && <div style={{color: "red", textAlign: "left"}}><small>{errors.password}</small></div>}  
                     </Form.Group>
 
-                    <div className='text-center'>
-                      <Button variant="primary" type="submit" >
+                    <div className=''>
+                      <Button variant="primary" type="submit" className='w-100'>
                         Submit
                       </Button>
                     </div>

@@ -151,7 +151,6 @@ const Home = ({ parentLoading, t } ) => {
         return <p>🎱 {item}</p>;
       }
   } 
-
   const handleDelete = async (id) => {
     console.log(id);
     await axios.delete(`http://localhost:3001/list/${id}`)
@@ -170,7 +169,6 @@ const Home = ({ parentLoading, t } ) => {
   const handleCancel = () => {
     console.log('Action canceled');
   };
-
   const listitem = () => {
     if (loading) { 
       return <tr className='d-flex'>
@@ -195,7 +193,6 @@ const Home = ({ parentLoading, t } ) => {
         </td>
     </tr>)})
   }
-
   const updateList = async (keyword) => {
     setLoading(true);
     try {
