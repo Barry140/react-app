@@ -84,7 +84,7 @@ const Register = () => {
     }
     const createUser = async () =>  {
       try{
-            const response = await axios.post('http://localhost:3001/users', {
+            const response = await axios.post('https://nodeapi-dwff.onrender.com/users', {
               ...registerformData
             })
             if(response.data.message === "success"){  
