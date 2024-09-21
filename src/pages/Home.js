@@ -153,7 +153,7 @@ const Home = ({ parentLoading, t } ) => {
   } 
   const handleDelete = async (id) => {
     console.log(id);
-    await axios.delete(`http://localhost:3001/list/${id}`)
+    await axios.delete(`http://nodeapi-dwff.onrender.com/list/${id}`)
     toast.success("Deleted!!", {
       position: "bottom-right",
       autoClose: 5000,
@@ -196,7 +196,7 @@ const Home = ({ parentLoading, t } ) => {
   const updateList = async (keyword) => {
     setLoading(true);
     try {
-      let apiEndpoint = 'http://localhost:3001/list';
+      let apiEndpoint = 'http://nodeapi-dwff.onrender.com/list';
       if (keyword) {
         apiEndpoint += `?keyword=${keyword}`
       }
@@ -212,7 +212,7 @@ const Home = ({ parentLoading, t } ) => {
     }
   }
   const getItem = async (id) => {
-    await axios.get(`http://localhost:3001/list/${id}`)
+    await axios.get(`http://nodeapi-dwff.onrender.com/list/${id}`)
     .then(response => {
       return setPeopleFormData(response.data)
     })
@@ -221,14 +221,14 @@ const Home = ({ parentLoading, t } ) => {
     })
   }
   const patchItem = async (id) => {
-    await axios.put(`http://localhost:3001/list/${id}`, {
+    await axios.put(`http://nodeapi-dwff.onrender.com/list/${id}`, {
         name: peopleFormData.name,
         status: peopleFormData.status
     })
   }
   const postList = async () => {
       try {
-        const response = await axios.post('http://localhost:3001/list', {
+        const response = await axios.post('http://nodeapi-dwff.onrender.com/list', {
           ...peopleFormData
         });
         console.log(response);
