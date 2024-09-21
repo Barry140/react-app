@@ -59,8 +59,6 @@ const Login = () => {
       for (let key in loginformData) {
         if (!loginformData[key].length) {
             formErrors[key] = "Required"; 
-        } else {
-          formErrors[key] = ""; 
         }
     }
       setErrors(prevState => ({ 
@@ -81,10 +79,7 @@ const Login = () => {
             setTimeout(() => {
               navigate('/')
             }, 2000); 
-          }else{
-            toastLoginFalse();
           }
-          
       }catch (error) {
           console.error('Error posting data:', error);
         }
