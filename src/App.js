@@ -1,76 +1,57 @@
-
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
 import './App.css';
-import { useState } from "react";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Register from './pages/Register';
+import { ToastContainer, toast } from 'react-toastify';
 
 function App() {
-  const [people, setPeople] = useState([
-    {
-      name:"john",
-      age: 10,
-      address:"TD"
-    },
-    {
-      name:"johnson",
-      age: 10,
-      address:"TD"
-    },
-    {
-      name:"The rock",
-      age: 20,
-      address:"TD"
-    },
-    {
-      name:"Dwayne ",
-      age: 10,
-      address:"TD"
-    }
-  ]
-)
-  
-  const handleItem = (e) => {
-    e.preventDefault();
-    // Get values of new people from form (name, age, address)
-    const newName = e.target.name.value;
-    const newAge = e.target.age.value;
-    const newAddress = e.target.address.value;
-    // Add new people to array of people
-    setPeople(prevState => [ ...prevState, {name:newName,age:newAge,address:newAddress} ] )
 
-    // Reset form values after adding new people
-    e.target.reset();
+  const navigate = useNavigate();
+
+  const handleLogin= () =>  {
+    navigate("/login");
+  }
+  const handleRegister= () =>  {
+    navigate("/register");
   }
 
-  const listitem = people.map((item, idx) => <tr key={idx}>
-    <td>{item.name}</td>
-    <td>{item.age}</td>
-    <td>{item.address}</td>
-  </tr>)
-  
-
+  const [loading, setLoading] = useState(true);
 
   return (
-    <div className="App">
-      <header className="App-header">
-          <table>
-      <tr>
-        <th>Name</th>
-        <th>Contact</th>
-        <th>Country</th>
-      </tr>
-      {listitem}
-    </table>
+    <Container>
+      <div className="App">
+        <header >
+        <Row>
+          <Col><Link to={'/'} style={{ textDecoration: 'none' , color: 'black'} }><h1>TODO list Demo App</h1></Link></Col>
+          <Col className='d-flex justify-content-end'>
+            <Button type="button" variant="outline-primary" className='me-2'  onClick={handleLogin}>
+                Login
+            </Button>
+            <Button type="button" variant="outline-primary"  onClick={handleRegister}>
+                Register
+            </Button>
+          </Col>
+        </Row>
+          <p>Do it now</p>
+        </header>
 
-    <form onSubmit={handleItem}>
-      <input type="text" name="name"/>
-      <input type="number" name="age"/>
-      <input type="text" name="address"/>
-      <button type="submit">ADD PEOPLE</button>
-    </form>
+          <Routes>
+            <Route exact path='/' element={<Home parentLoading={loading} t="Tuan"/>} />
+            <Route exact path="/login" element={<Login />} />  
+            <Route exact path="/register" element={<Register />} />  
+          </Routes>
+      </div>
+    </Container>
 
-      </header>
-    </div>
   );
+  
 }
 
 export default App;
